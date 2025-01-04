@@ -1,6 +1,13 @@
-import {describe, it, expect} from '@jest/globals'
+import {describe, it, expect, vi} from 'vitest'
 import {app} from '../index'
 import request from 'supertest';
+import { prismaClient } from '../db';
+
+vi.mock("../db.ts", () => {
+    return {
+        prismaClient: {sum:{create: vi.fn()}}
+    }
+})
 
 
 describe("testing POST/sum", () => {
@@ -37,7 +44,7 @@ describe("testing POST/sum", () => {
           
         });
         expect(res.statusCode).toBe(411);
-        expect(res.body.message).toBe("invalid input");
+        expect(res.body.message).toBe("Incorrect inputs");
       });
 })
 
